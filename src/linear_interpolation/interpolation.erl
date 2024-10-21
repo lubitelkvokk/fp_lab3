@@ -1,15 +1,24 @@
--module(linear_interpolation).
+-module(interpolation).
 -compile([debug_info]).
--export([find_polynom_L_x/2, get_list_of_interpolation_points/2]).
+-export([
+    find_polynom_L_x/2,
+    get_list_of_interpolation_points/2,
+    get_list_of_linear_interpolation_points/2
+]).
+
+get_list_of_linear_interpolation_points(Points, Step) ->
+    [One, Two | _] = lists:reverse(Points),
+    gloip([Two, One], Two, One, Step, []).
 
 get_list_of_interpolation_points(Points, Step) ->
     {MinX, _} = lists:nth(1, Points),
     {MaxX, _} = lists:max(Points),
-    glopfli(Points, MinX, MaxX, Step, []).
+    gloip(Points, MinX, MaxX, Step, []).
 
-glopfli(Points, Curr, Bound, _, Acc) when Curr >= Bound -> [{Curr, find_polynom_L_x(Curr, Points)} | Acc];
-glopfli(Points, Curr, Bound, Step, Acc) ->
-    glopfli(Points, Curr + Step, Bound, Step, [{Curr, find_polynom_L_x(Curr, Points)} | Acc]).
+gloip(Points, Curr, Bound, _, Acc) when Curr >= Bound ->
+    [{Curr, find_polynom_L_x(Curr, Points)} | Acc];
+gloip(Points, Curr, Bound, Step, Acc) ->
+    gloip(Points, Curr + Step, Bound, Step, [{Curr, find_polynom_L_x(Curr, Points)} | Acc]).
 
 find_polynom_L_x(X, Points) ->
     find_polynom_L_x(X, Points, length(Points), 0).
