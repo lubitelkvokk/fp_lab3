@@ -6,9 +6,16 @@
     get_list_of_linear_interpolation_points/2
 ]).
 
+-include("interpolation.hrl").
+
+-spec get_list_of_interpolation_points(points(), integer()) -> points().
+-spec get_list_of_linear_interpolation_points(points(), integer()) -> points().
+
 get_list_of_linear_interpolation_points(Points, Step) ->
     [One, Two | _] = lists:reverse(Points),
-    gloip([Two, One], Two, One, Step, []).
+    {X1, _} = One,
+    {X2, _} = Two,
+    gloip([Two, One], X2, X1, Step, []).
 
 get_list_of_interpolation_points(Points, Step) ->
     {MinX, _} = lists:nth(1, Points),

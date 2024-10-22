@@ -7,7 +7,8 @@
     process_point/1,
     store_point/2,
     interpolate_by_lagrange/2,
-    interpolate_by_linear/2
+    interpolate_by_linear/2,
+    get_points/1
 ]).
 
 spawn_process_point(InitialPoints) ->
@@ -15,6 +16,13 @@ spawn_process_point(InitialPoints) ->
 
 store_point(Pid, Point) ->
     Pid ! {self(), {store, Point}},
+    receive
+        Msg -> Msg
+    end.
+
+%% Функция для получения текущих точек
+get_points(Pid) ->
+    Pid ! {self(), getPoints},
     receive
         Msg -> Msg
     end.
@@ -34,13 +42,21 @@ interpolate_by_linear(Pid, Step) ->
 process_point(Points) ->
     receive
         {From, {store, {X, Y}}} ->
-            From ! {self(), {ok, successfull_storing}},
-            process_point([{X, Y} | Points]);
+            %% Сохраняем новую точку в список и подтверждаем сохранение
+
+            % Обновляем список точек
+            NewPoints = [{X, Y} | Points],
+            From ! {ok, successfull_storing},
+            % Рекурсивно вызываем процесс с обновленным списком
+            process_point(NewPoints);
         {From, {lagrange_interpolate, Step}} ->
             From ! {self(), {ok, get_list_of_interpolation_points(Points, Step)}},
             process_point(Points);
         {From, {linear_interpolate, Step}} ->
             From ! {self(), {ok, get_list_of_linear_interpolation_points(Points, Step)}},
+            process_point(Points);
+        {From, getPoints} ->
+            From ! {ok, Points},
             process_point(Points);
         {From, _} ->
             From ! {unexpected},
