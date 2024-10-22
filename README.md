@@ -23,3 +23,4 @@ Pid_manager ! {self(), {3.142, 0}}.
 interpolation_process:interpolate_by_linear(Pid_process_point, 1).
 
 interpolation_process:store_point(Pid_process_point, {4, 0}).      
+interpolation_process:get_points(Pid_process_point).      

@@ -1,3 +1,3 @@
--type point() :: {integer(), integer()}.
+-type point() :: {integer() | float(), integer() | float()}.
 
 -type points() :: [point()].

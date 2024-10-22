@@ -18,8 +18,9 @@ get_list_of_linear_interpolation_points(Points, Step) ->
     gloip([Two, One], X2, X1, Step, []).
 
 get_list_of_interpolation_points(Points, Step) ->
-    {MinX, _} = lists:nth(1, Points),
-    {MaxX, _} = lists:max(Points),
+    MinX = lists:nth(1, Points),
+    % Используем список X-координат
+    MaxX = lists:max([X || {X, _} <- Points]),
     gloip(Points, MinX, MaxX, Step, []).
 
 gloip(Points, Curr, Bound, _, Acc) when Curr >= Bound ->
@@ -41,4 +42,11 @@ linear_l_i(_, _, [], Acc) ->
 linear_l_i(X, X_j, [{X_j, _} | Points], Acc) ->
     linear_l_i(X, X_j, Points, Acc);
 linear_l_i(X, X_i, [{X_j, _} | Points], Acc) ->
-    linear_l_i(X, X_i, Points, Acc * ((X - X_j) / (X_i - X_j))).
+    if
+        % Проверка на равенство
+        X_i =:= X_j ->
+            % Пропускаем это деление, если точки совпадают
+            Acc;
+        true ->
+            linear_l_i(X, X_i, Points, Acc * ((X - X_j) / (X_i - X_j)))
+    end.

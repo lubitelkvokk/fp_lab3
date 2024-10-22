@@ -41,11 +41,11 @@ interpolate_by_linear(Pid, Step) ->
 
 process_point(Points) ->
     receive
-        {From, {store, {X, Y}}} ->
+        {From, {store, Point}} ->
             %% Сохраняем новую точку в список и подтверждаем сохранение
 
             % Обновляем список точек
-            NewPoints = [{X, Y} | Points],
+            NewPoints = Points ++ [Point],
             From ! {ok, successfull_storing},
             % Рекурсивно вызываем процесс с обновленным списком
             process_point(NewPoints);
