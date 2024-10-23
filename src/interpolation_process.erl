@@ -50,10 +50,22 @@ process_point(Points) ->
             % Рекурсивно вызываем процесс с обновленным списком
             process_point(NewPoints);
         {From, {lagrange_interpolate, Step}} ->
-            From ! {self(), {ok, get_list_of_interpolation_points(Points, Step)}},
+            Length = length(Points),
+            if
+                Length > 4 ->
+                    From ! {ok, get_list_of_interpolation_points(Points, Step)};
+                true ->
+                    From ! {not_enough_values_for_lagrange_interpolation}
+            end,
             process_point(Points);
         {From, {linear_interpolate, Step}} ->
-            From ! {self(), {ok, get_list_of_linear_interpolation_points(Points, Step)}},
+            Length = length(Points),
+            if
+                Length > 1 ->
+                    From ! {ok, get_list_of_linear_interpolation_points(Points, Step)};
+                true ->
+                    From ! {not_enough_values_for_linear_interpolation}
+            end,
             process_point(Points);
         {From, getPoints} ->
             From ! {ok, Points},

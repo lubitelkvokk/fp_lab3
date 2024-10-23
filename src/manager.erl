@@ -9,8 +9,20 @@ manage_algorithm_io_process(Pid_of_algorithm_proc, Pid_of_output_proc) ->
     receive
         {_, Point} ->
             interpolation_process:store_point(Pid_of_algorithm_proc, Point),
-            Points = interpolation_process:interpolate_by_linear(Pid_of_algorithm_proc, 1),
-            output:output_data(Pid_of_output_proc, Points),
+            Ans1 = interpolation_process:interpolate_by_linear(Pid_of_algorithm_proc, 1),
+            Ans2 = interpolation_process:interpolate_by_lagrange(Pid_of_algorithm_proc, 1),
+            if
+                Ans1 =/= {not_enough_values_for_linear_interpolation} ->
+                    output:output_data(Pid_of_output_proc, Ans1);
+                true ->
+                    ok
+            end,
+            if
+                Ans2 =/= {not_enough_values_for_lagrange_interpolation} ->
+                    output:output_data(Pid_of_output_proc, Ans2);
+                true ->
+                    ok
+            end,
             manage_algorithm_io_process(Pid_of_algorithm_proc, Pid_of_output_proc);
         _ ->
             manage_algorithm_io_process(Pid_of_algorithm_proc, Pid_of_output_proc)
