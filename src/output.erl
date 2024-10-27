@@ -15,18 +15,19 @@ output_process() ->
                 ok_linear_interpolate ->
                     io:format("~nLinear interpolation: ~n~s~n", [
                         string:join(
-                            [io_lib:format("~.2f, ~.2f", tuple_to_list(Point)) || Point <- Points],
-                            ""
+                            [io_lib:format("~.2f: ~.2f", tuple_to_list(Point)) || Point <- Points],
+                            " | "
                         )
                     ]);
                 ok_lagrange_interpolate ->
                     io:format("~nLagrange interpolation: ~n~s~n", [
                         string:join(
-                            [io_lib:format("~.2f, ~.2f", tuple_to_list(Point)) || Point <- Points],
-                            ""
+                            [io_lib:format("~.2f: ~.2f", tuple_to_list(Point)) || Point <- Points],
+                            " | "
                         )
                     ]);
-                _ ->
+                Data ->
+                    io:format("~p~n", [Data]),
                     io:format("~nUndefined type of interpolation")
             end,
             output_process();

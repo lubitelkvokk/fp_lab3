@@ -15,29 +15,29 @@ spawn_process_point(InitialPoints) ->
     spawn(?MODULE, process_point, [InitialPoints]).
 
 store_point(Pid, Point) ->
-    Pid ! {self(), {store, Point}},
-    receive
-        Msg -> Msg
-    end.
+    Pid ! {self(), {store, Point}}.
+    % receive
+    %     Msg -> Msg
+    % end.
 
 %% Функция для получения текущих точек
 get_points(Pid) ->
-    Pid ! {self(), getPoints},
-    receive
-        Msg -> Msg
-    end.
+    Pid ! {self(), getPoints}.
+    % receive
+    %     Msg -> Msg
+    % end.
 
 interpolate_by_lagrange(Pid, Step) ->
-    Pid ! {self(), {lagrange_interpolate, Step}},
-    receive
-        Msg -> Msg
-    end.
+    Pid ! {self(), {lagrange_interpolate, Step}}.
+    % receive
+    %     Msg -> Msg
+    % end.
 
 interpolate_by_linear(Pid, Step) ->
-    Pid ! {self(), {linear_interpolate, Step}},
-    receive
-        Msg -> Msg
-    end.
+    Pid ! {self(), {linear_interpolate, Step}}.
+    % receive
+    %     Msg -> Msg
+    % end.
 
 process_point(Points) ->
     receive
@@ -49,7 +49,7 @@ process_point(Points) ->
             From ! {ok, successfull_storing},
             % Рекурсивно вызываем процесс с обновленным списком
             process_point(NewPoints);
-        {From, {lagrange_interpolate, Step}} ->
+        {From, {lagrange_interpolate,Step}} ->
             Length = length(Points),
             if
                 Length > 3 ->

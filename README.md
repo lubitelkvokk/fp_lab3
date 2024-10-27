@@ -21,6 +21,4 @@ output:output_data(Pid_output, [124, 325, 325]).
 Pid_manager = manager:spawn_manage_algorithm_io_process(Pid_process_point, Pid_output).
 Pid_manager ! {self(), {3.142, 0}}.
 interpolation_process:interpolate_by_linear(Pid_process_point, 1).
-
-interpolation_process:store_point(Pid_process_point, {4, 0}).      
 interpolation_process:get_points(Pid_process_point).      
