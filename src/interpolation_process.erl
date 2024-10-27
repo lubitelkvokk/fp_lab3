@@ -52,8 +52,8 @@ process_point(Points) ->
         {From, {lagrange_interpolate, Step}} ->
             Length = length(Points),
             if
-                Length > 4 ->
-                    From ! {ok, get_list_of_interpolation_points(Points, Step)};
+                Length > 3 ->
+                    From ! {ok_lagrange_interpolate, lists:reverse(get_list_of_interpolation_points(Points, Step))};
                 true ->
                     From ! {not_enough_values_for_lagrange_interpolation}
             end,
@@ -62,7 +62,8 @@ process_point(Points) ->
             Length = length(Points),
             if
                 Length > 1 ->
-                    From ! {ok, get_list_of_linear_interpolation_points(Points, Step)};
+                    From !
+                        {ok_linear_interpolate, lists:reverse(get_list_of_linear_interpolation_points(Points, Step))};
                 true ->
                     From ! {not_enough_values_for_linear_interpolation}
             end,

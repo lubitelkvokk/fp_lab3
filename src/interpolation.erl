@@ -18,10 +18,11 @@ get_list_of_linear_interpolation_points(Points, Step) ->
     gloip([Two, One], X2, X1, Step, []).
 
 get_list_of_interpolation_points(Points, Step) ->
-    MinX = lists:nth(1, Points),
-    % Используем список X-координат
-    MaxX = lists:max([X || {X, _} <- Points]),
-    gloip(Points, MinX, MaxX, Step, []).
+    [One, Two, Three, Four | _] = lists:reverse(Points),
+    LimitedPoints = [Four, Three, Two, One],
+    {X1, _} = One,
+    {X2, _} = Four,
+    gloip(LimitedPoints, X2, X1, Step, []).
 
 gloip(Points, Curr, Bound, _, Acc) when Curr >= Bound ->
     [{Curr, find_polynom_L_x(Curr, Points)} | Acc];
