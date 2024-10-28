@@ -3,7 +3,9 @@
 % -import(interpolation_process, [store_point/2, interpolate_by_lagrange/2, interpolate_by_linear/2]).
 
 spawn_manage_algorithm_io_process(Pid_of_algorithm_proc, Pid_of_output_proc, Algorithms, Step) ->
-    spawn(?MODULE, manage_algorithm_io_process, [Pid_of_algorithm_proc, Pid_of_output_proc, Algorithms, Step]).
+    spawn(?MODULE, manage_algorithm_io_process, [
+        Pid_of_algorithm_proc, Pid_of_output_proc, Algorithms, Step
+    ]).
 
 send_with_each_algorithm(_, _, [], _) ->
     ok;
@@ -19,6 +21,13 @@ send_with_each_algorithm(Pid_of_algorithm_proc, Point, [Algorithm | T], Step) ->
             ok
     end,
     send_with_each_algorithm(Pid_of_algorithm_proc, Point, T, Step).
+
+-spec manage_algorithm_io_process(
+    Pid_of_algorithm_proc :: pid(),
+    Pid_of_output_proc :: pid(),
+    Algorithms :: list(),
+    Step :: integer()
+) -> any().
 
 %% только принимает данные
 manage_algorithm_io_process(Pid_of_algorithm_proc, Pid_of_output_proc, Algorithms, Step) ->
@@ -40,7 +49,6 @@ manage_algorithm_io_process(Pid_of_algorithm_proc, Pid_of_output_proc, Algorithm
             manage_algorithm_io_process(
                 Pid_of_algorithm_proc, Pid_of_output_proc, Algorithms, Step
             );
-        
         _ ->
             manage_algorithm_io_process(Pid_of_algorithm_proc, Pid_of_output_proc, Algorithms, Step)
     end.

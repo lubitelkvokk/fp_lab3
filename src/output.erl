@@ -2,7 +2,7 @@
 -export([output_data/2, spawn_output_process/0, output_process/0]).
 -include("interpolation.hrl").
 
--spec output_data(Pid :: pid(), Points :: points()) -> ok.
+-spec output_data(Pid :: pid(), Data::{atom(), Points :: points()}) -> ok.
 
 spawn_output_process() ->
     spawn(?MODULE, output_process, []).
