@@ -24,8 +24,11 @@ jobs:
               run: |
                   rebar3 dialyzer
 
-            - name: Compile and Run with Input
+            - name: Compile
               run: |
                   rebar3 escriptize
+
+            - name: Run with Input
+              run: | 
                   # Передача значений в lab3 через стандартный ввод
                   echo -e "0 0\n1.571 1\n3.142 0\n4.712 -1\n12.568 0\nstop" | ./_build/default/bin/lab3 --algorithms=lagrange,linear --frequency=1
