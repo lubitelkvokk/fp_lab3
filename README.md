@@ -1,24 +1,66 @@
 lab3
 =====
+Студент: ```Михайлов Павел```
 
-An escript
+Группа: ```P3317```
 
-Build
------
+ИСУ: ```367403```
 
-    $ rebar3 escriptize
+
+
+**Цель**: получить навыки работы с вводом/выводом, потоковой обработкой данных, командной строкой.
+
+В рамках лабораторной работы вам предлагается повторно реализовать лабораторную работу по предмету "Вычислительная математика" посвящённую интерполяции (в разные годы это лабораторная работа 3 или 4) со следующими дополнениями:
+- обязательно должна быть реализована линейная интерполяция;
+- настройки алгоритма интерполяции и выводимых данных должны задаваться через аргументы командной строки:
+    - какие алгоритмы использовать (в том числе два сразу);
+    - частота дискретизации результирующих данных;
+    - и т.п.;
+- входные данные должны задаваться в текстовом формате на подобии ".csv" (к примеру x;y\n или x\ty\n) и подаваться на стандартный ввод, входные данные должны быть отсортированы по возрастанию x;
+- выходные данные должны подаваться на стандартный вывод;
+- программа должна работать в потоковом режиме (пример -- cat | grep 11), это значит, что при запуске программы она должна ожидать получения данных на стандартный ввод, и, по мере получения достаточного количества данных, должна выводить рассчитанные точки в стандартный вывод;
+
+Приложение должно быть организовано следующим образом:
+![image](https://github.com/user-attachments/assets/2e0b48fa-f440-47eb-ac3b-5ce79707882c)
 
 Run
 ---
 
     $ _build/default/bin/lab3
+    
+**Пример работы**
+```
+Program started with algorithms: [lagrange,linear] and frequency: 1
+Enter number (or 'stop' for finishing):
+0 0
+Enter number (or 'stop' for finishing):
+1.571 1
 
-<!-- Points = [{0.0, 0.0}, {1.571, 1.0}, {3.142, 0.0}, {4.712, -1.0}, {12.568, 0.0}]. -->
-Points = [{0, 0}, {1.571, 1}].
-Pid_process_point = interpolation_process:spawn_process_point(Points).
-Pid_output = output:spawn_output_process().
-output:output_data(Pid_output, [124, 325, 325]).
-Pid_manager = manager:spawn_manage_algorithm_io_process(Pid_process_point, Pid_output).
-Pid_manager ! {self(), {3.142, 0}}.
-interpolation_process:interpolate_by_linear(Pid_process_point, 1).
-interpolation_process:get_points(Pid_process_point).      
+Linear interpolation: 
+0.00: 0.00 | 1.00: 0.64 | 2.00: 1.27
+
+Enter number (or 'stop' for finishing):
+3.142 0
+
+Linear interpolation: 
+1.57: 1.00 | 2.57: 0.36 | 3.57: -0.27
+Enter number (or 'stop' for finishing):
+4.712 -1
+
+Lagrange interpolation: 
+0.00: 0.00 | 1.00: 0.97 | 2.00: 0.84 | 3.00: 0.12 | 4.00: -0.67 | 5.00: -1.03
+
+Linear interpolation: 
+3.14: 0.00 | 4.14: -0.64 | 5.14: -1.27
+
+Enter number (or 'stop' for finishing):
+12.568 0
+
+Lagrange interpolation: 
+1.57: 1.00 | 2.57: 0.37 | 3.57: -0.28 | 4.57: -0.91 | 5.57: -1.49 | 6.57: -1.95 | 7.57: -2.26 | 8.57: -2.38 | 9.57: -2.25 | 10.57: -1.84 | 11.57: -1.11 | 12.57: 0.00
+
+Linear interpolation: 
+4.71: -1.00 | 5.71: -0.87 | 6.71: -0.75 | 7.71: -0.62 | 8.71: -0.49 | 9.71: -0.36 | 10.71: -0.24 | 11.71: -0.11 | 12.71: 0.02
+Enter number (or 'stop' for finishing):
+Process is finishing a work
+```
