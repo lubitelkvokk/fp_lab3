@@ -26,7 +26,7 @@ lab3
 Run
 ---
 
-    $ _build/default/bin/lab3
+    $ ./_build/default/bin/lab3 --algorithms=lagrange,linear --frequency=1
     
 **Пример работы**
 ```
